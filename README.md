@@ -1,56 +1,53 @@
-📝 ToDo List with Due Dates
-A beautiful and interactive ToDo List web app that helps you manage your tasks along with due dates. Built with HTML, CSS, and vanilla JavaScript — this app stores your tasks in your browser’s local storage so you never lose track!
+# 📝 ToDo List with Due Dates
 
-🚀 Features
-✅ Add new tasks with optional due dates
+A stylish and simple ToDo List web app built with HTML, CSS, and JavaScript. It supports:
 
-⏳ Display formatted due dates alongside each task
+- 🗓️ Task creation with due dates  
+- ✅ Marking tasks as complete  
+- 🖊️ Editing tasks and due dates  
+- ❌ Deleting tasks  
+- 💾 Persistent localStorage support  
 
-✔️ Mark tasks as complete/incomplete
+---
 
-📝 Edit task text or due date directly
+## 🚀 Installation & Setup
 
-❌ Delete tasks
+1. Clone or download this repository.
+2. Ensure your browser supports `localStorage`.
 
-💾 Data persists using localStorage
+> 📌 Make sure all files (including background image `bgimage2.jpg`) are in the same directory.
 
-🎨 Responsive and visually appealing UI
+---
 
-📂 Installation & Setup
-Clone or download this repository to your local machine.
+## 🌐 How to Run
 
-Make sure the background image bgimage2.jpg is in the same directory as the HTML file.
+1. Open the `index.html` file in your browser.
+2. Start adding tasks right away!
 
-Open the index.html file in your browser to use the app.
+---
 
-🏃 How to Use
-Type a task in the input box.
+## 🎮 How to Use the App
 
-(Optional) Select a due date.
+- Type a task and optionally choose a due date.
+- Click **Add** or press **Enter** to add the task.
+- Use checkboxes to mark tasks complete.
+- Use the **Edit** button to update task text or due date.
+- Click **X** to delete a task.
+- All your tasks are saved in the browser using localStorage.
 
-Click Add or press Enter to save the task.
+---
 
-Use the checkbox to mark a task as complete/incomplete.
+## ⚠️ Notes
 
-Click Edit to modify a task or its due date — and Save when you're done.
+- This app uses `localStorage` — your data stays saved even if you close the browser.
+- Due dates can be edited directly as plain text (e.g., `2025-05-23`).
 
-Click the ❌ Delete button to remove a task.
+---
 
+## 📄 License
 
+This project is open-source and free to use. Customize and enhance it as you like!
 
-⚙️ Tech Stack
-HTML5
-CSS3
-JavaScript (ES6+)
+---
 
-📌 Notes
-Tasks are stored in your browser's localStorage and persist between page reloads.
-
-The background image must be present as bgimage2.jpg in the same folder.
-
-Due dates are editable as plain text, so use YYYY-MM-DD format for compatibility.
-
-📄 License
-This project is open source and free to use. You may modify, share, or enhance it freely.
-
-Enjoy organizing your day with this handy little ToDo app! 🗒️📆✨
+Enjoy organizing your day! 🗂️📆
