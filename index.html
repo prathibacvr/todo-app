@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ToDo List with Due Dates</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('bgimage2.jpg');
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            height: 100vh;
+            overflow: hidden;
+            color: #fff;
+        }
+        h1 {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+        .container {
+            background: rgb(69, 5, 11);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+            font-family: cursive;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            max-height: 80vh;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        input[type="text"],input[type="date"] {
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            font-family: cursive;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+            flex: 1;
+            min-width: 140px;
+        }
+        button {
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            border: none;
+            background: rgb(162, 36, 36);
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            min-width: 80px;
+        }
+        button:hover {
+            background: rgb(239, 5, 5);
+        }
+        #task-list {
+            overflow-y: auto;
+            flex: 1;
+        }
+        #task-list .todo {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .task {
+            flex: 2;
+            font-size: 1rem;
+            cursor: pointer;
+            min-width: 150px;
+        }
+        .task.completed {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+        .due-date {
+            flex: 1;
+            font-size: 0.9rem;
+            color: #eee;
+            font-style: italic;
+            min-width: 120px;
+            cursor: pointer;
+        }
+        .delete,.edit {
+            cursor: pointer;
+            background: none;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            padding: 2px 6px;
+            color: #fff;
+            transition: transform 0.2s, color 0.3s;
+            background-color: brown;
+        }
+        .delete:hover,.edit:hover {
+            color: #13263a;
+        }
+        input[type="checkbox"] {
+            transform: scale(1.3);
+            margin-right: 8px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>ToDO LIST</h1>
+    <div class="container">
+        <div class="input-group">
+            <input type="text" placeholder="Add a new task..." id="task-input" />
+            <input type="date" id="due-date-input" />
+            <button id="add-btn">Add</button>
+        </div>
+        <div id="task-list"></div>
+    </div>
+
+    <script>
+        const taskInput = document.getElementById('task-input');
+        const dueDateInput = document.getElementById('due-date-input');
+        const addBtn = document.getElementById('add-btn');
+        const taskList = document.getElementById('task-list');
+        let taskArray = [];
+
+        const savedTasks = localStorage.getItem('task array');
+        if (savedTasks) {
+            taskArray = JSON.parse(savedTasks);
+            renderTasks();
+        }
+        addBtn.addEventListener('click', () => {
+            const text = taskInput.value.trim();
+            const dueDate = dueDateInput.value;
+            if (text === '') {
+                alert('Please enter a task.');
+                return;
+            }
+            taskArray.push({
+                id: Date.now(),
+                text,
+                dueDate,
+                completed: false
+            });
+            saveAndRender();
+            taskInput.value = '';
+            dueDateInput.value = '';
+        });
+        taskInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter') addBtn.click();
+        });
+        function saveAndRender() {
+            localStorage.setItem('task array', JSON.stringify(taskArray));
+            renderTasks();
+        }
+        function renderTasks() {
+            taskList.innerHTML = '';
+            if (taskArray.length === 0) {
+                taskList.innerHTML = "<p style='text-align: center; color: #ccc;'>No tasks yet. Add one!</p>";
+                return;
+            }
+            taskArray.forEach(({ id, text, dueDate, completed }) => {
+                const taskDiv = document.createElement('div');
+                taskDiv.classList.add('todo');
+
+                const formattedDate = dueDate ? new Date(dueDate).toLocaleDateString() : 'No due date';
+
+                taskDiv.innerHTML = `
+                    <input type="checkbox" ${completed ? 'checked' : ''}>
+                    <span class="task ${completed ? 'completed' : ''}" contenteditable="false">${text}</span>
+                    <span class="due-date" contenteditable="false">${formattedDate}</span>
+                    <button class="edit">Edit</button>
+                    <button class="delete">X</button>
+                `;
+                const checkbox = taskDiv.querySelector('input[type="checkbox"]');
+                const taskSpan = taskDiv.querySelector('.task');
+                const dueSpan = taskDiv.querySelector('.due-date');
+                const editBtn = taskDiv.querySelector('.edit');
+                const deleteBtn = taskDiv.querySelector('.delete');
+
+                checkbox.addEventListener('change', () => {
+                    taskArray = taskArray.map(task =>
+                        task.id === id ? { ...task, completed: checkbox.checked } : task
+                    );
+                    saveAndRender();
+                });
+                deleteBtn.addEventListener('click', () => {
+                    taskArray = taskArray.filter(task => task.id !== id);
+                    saveAndRender();
+                });
+                editBtn.addEventListener('click', () => {
+                    if (editBtn.innerText === 'Edit') {
+                        taskSpan.contentEditable = true;
+                        dueSpan.contentEditable = true;
+                        dueSpan.innerText = dueDate || '';
+                        editBtn.innerText = 'Save';
+                    } else {
+                        taskSpan.contentEditable = false;
+                        dueSpan.contentEditable = false;
+
+                        const newText = taskSpan.innerText.trim();
+                        const newDate = dueSpan.innerText.trim();
+                        if (newText === '') {
+                            alert('Task cannot be empty.');
+                            return;
+                        }
+                        const validDate = /^\d{4}-\d{2}-\d{2}$/.test(newDate) ? newDate : '';
+                        taskArray = taskArray.map(task =>
+                            task.id === id ? { ...task, text: newText, dueDate: validDate } : task
+                        );
+                        saveAndRender();
+                    }
+                });
+                taskList.appendChild(taskDiv);
+            });
+        }
+    </script>
+</body>
+</html>
