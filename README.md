@@ -37,12 +37,6 @@ A stylish and simple ToDo List web app built with HTML, CSS, and JavaScript. It 
 
 ---
 
-## ⚠️ Notes
-
-- This app uses `localStorage` — your data stays saved even if you close the browser.
-- Due dates can be edited directly as plain text (e.g., `2025-05-23`).
-
----
 
 ## 📄 License
 
